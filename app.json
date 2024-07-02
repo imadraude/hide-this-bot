@@ -13,10 +13,6 @@
       "required": false
     }
   },
-  "addons": [
-    { "plan": "heroku-postgresql:hobby-dev" }
-  ],
-  "buildpacks": [
-    { "url": "heroku/python" }
-  ]
+  "addons": [{ "plan": "heroku-postgresql:hobby-dev" }],
+  "buildpacks": [{ "url": "heroku/python" }]
 }

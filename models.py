@@ -3,23 +3,33 @@ from datetime import datetime
 
 from aiogram import types
 from loguru import logger
-from peewee import Model, BigIntegerField, IntegerField, CharField, BooleanField, TimestampField, ForeignKeyField
+from peewee import (
+    BigIntegerField,
+    BooleanField,
+    CharField,
+    ForeignKeyField,
+    IntegerField,
+    Model,
+    TimestampField,
+)
 from playhouse.db_url import connect
 
-from utils import get_formatted_username_or_id, PostMode
+from utils import PostMode, get_formatted_username_or_id
 
-db = connect(os.environ['DATABASE_URL'])
+db = connect(os.environ["DATABASE_URL"])
+
 
 class BaseModel(Model):
     class Meta:
         database = db
 
+
 class User(BaseModel):
-    user_id = BigIntegerField(primary_key = True)
-    username = CharField(null = True)
+    user_id = BigIntegerField(primary_key=True)
+    username = CharField(null=True)
     first_name = CharField()
-    last_name = CharField(null = True)
-    language_code = CharField(null = True)
+    last_name = CharField(null=True)
+    language_code = CharField(null=True)
     has_dialog = BooleanField()
     inline_queries_count = IntegerField()
     first_interaction_time = TimestampField()
@@ -32,16 +42,21 @@ class User(BaseModel):
             result.refresh(user)
         except Exception as e:
             result = User.create(
-                user_id = user.id,
-                first_name = user.first_name,
-                last_name = user.last_name,
-                username = user.username,
-                language_code = user.language_code,
-                has_dialog = False,
-                inline_queries_count = 0,
-                first_interaction_time = datetime.utcnow(),
-                last_interaction_time = datetime.utcnow())
-            logger.info('new user ' + get_formatted_username_or_id(user) + ' has been saved to the database')
+                user_id=user.id,
+                first_name=user.first_name,
+                last_name=user.last_name,
+                username=user.username,
+                language_code=user.language_code,
+                has_dialog=False,
+                inline_queries_count=0,
+                first_interaction_time=datetime.utcnow(),
+                last_interaction_time=datetime.utcnow(),
+            )
+            logger.info(
+                "new user "
+                + get_formatted_username_or_id(user)
+                + " has been saved to the database"
+            )
         return result
 
     def refresh(self, user: types.User):
@@ -60,7 +75,9 @@ class User(BaseModel):
             self.has_dialog,
             self.inline_queries_count,
             self.first_interaction_time,
-            self.last_interaction_time)
+            self.last_interaction_time,
+        )
+
 
 class Post(BaseModel):
     author = ForeignKeyField(User)
@@ -69,10 +86,10 @@ class Post(BaseModel):
     creation_time = TimestampField()
 
     def get_scope_mentions(self):
-        return str(self.scope).lower().split(' ')
+        return str(self.scope).lower().split(" ")
 
     def set_scope_mentions(self, mentions: set):
-        self.scope = ' '.join(mentions).replace('@', '')
+        self.scope = " ".join(mentions).replace("@", "")
         self.save()
 
     def update_scope_mention(self, old_mention: str, new_mention: str):
@@ -90,7 +107,9 @@ class Post(BaseModel):
                 access_granted = True
                 self.update_scope_mention(user.username, str(user.id))
             else:
-                access_granted = user.id == self.author.user_id or str(user.id) in self.scope
+                access_granted = (
+                    user.id == self.author.user_id or str(user.id) in self.scope
+                )
         elif mode == PostMode.EXCEPT:
             if user.username and user.username.lower() in self.get_scope_mentions():
                 access_granted = False
@@ -99,4 +118,5 @@ class Post(BaseModel):
                 access_granted = str(user.id) not in self.scope
         return access_granted
 
-db.create_tables([User, Post], safe = True)
+
+db.create_tables([User, Post], safe=True)

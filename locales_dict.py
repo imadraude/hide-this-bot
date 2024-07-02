@@ -1,4 +1,4 @@
-class Locale():
+class Locale:
     too_long_title: str
     for_title: str
     except_title: str
@@ -18,6 +18,7 @@ class Locale():
     not_accessible: str
     view: str
     and_connector: str
+
 
 class LocalesDict:
     def __init__(self, locales, default_locale: Locale):
