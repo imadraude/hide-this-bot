@@ -107,35 +107,12 @@ class Keyboards:
                         "🇺🇸 English",
                         url="https://teletype.in/@undrcrxwn/hidethisbot_en",
                     ),
-                    types.InlineKeyboardButton(
-                        "🇵🇱 Polski", url="https://teletype.in/@undrcrxwn/hidethisbot_pl"
-                    ),
                 ],
                 [
-                    types.InlineKeyboardButton(
-                        "🇷🇺 Русский",
-                        url="https://teletype.in/@undrcrxwn/hidethisbot_ru",
-                    ),
                     types.InlineKeyboardButton(
                         "🇺🇦 Українська",
                         url="https://teletype.in/@undrcrxwn/hidethisbot_ua",
                     ),
-                ],
-                [
-                    types.InlineKeyboardButton(
-                        "🇮🇹 Italiano",
-                        url="https://teletype.in/@undrcrxwn/hidethisbot_it",
-                    ),
-                    types.InlineKeyboardButton(
-                        "🇨🇿 Čeština",
-                        url="https://teletype.in/@undrcrxwn/hidethisbot_cz",
-                    ),
-                ],
-                [
-                    types.InlineKeyboardButton(
-                        "🇪🇸 Español",
-                        url="https://teletype.in/@undrcrxwn/hidethisbot_es",
-                    )
                 ],
             ]
         )

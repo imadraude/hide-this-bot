@@ -1,5 +1,4 @@
 import os
-import random
 import re
 import time
 from datetime import datetime
@@ -168,7 +167,7 @@ async def callback_query(call: types.CallbackQuery):
         (post_id, mode) = str(call.data).split(" ")
         try:
             post = Post.get_by_id(post_id)
-        except Exception as e:
+        except Exception:
             await call.answer(
                 text=locales[call.from_user.language_code].not_accessible,
                 show_alert=True,
